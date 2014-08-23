@@ -1,0 +1,202 @@
+FORMAT: 1A
+HOST: http://local.lepton.co
+
+# PrayerUpdate
+PrayerUpdate API is a resource to add prayer updates, as well as comments.
+
+# Group PrayerUpdates
+PrayerUpdate related resources of the **PrayerUpdates API**
+
+## PrayerUpdate Collection [/app_test.php/api/prayer/updates]
+### List all PrayerUpdates for a logged in user [GET]
+
++ Request (application/json)
+
+    + Header
+
+            Cookie: PHPSESSID=suf8n31ca43dc4ne5h38ok0da5
+            Accept: application/json
+
++ Response 200 (application/json)
+
+        {
+          "total": 3,
+          "limit": 10,
+          "data": [
+            {
+              "id": 2,
+              "account": {
+                "id": 1,
+                "firstName": "Nathan",
+                "lastName": "O'Hanlon",
+                "facebook_id": 718469082
+              },
+              "content": "Second for user 1 prayer update",
+              "comments": [
+                {
+                  "id": 1,
+                  "account": {
+                    "id": 1,
+                    "firstName": "Nathan",
+                    "lastName": "O'Hanlon",
+                    "facebook_id": 718469082
+                  },
+                  "content": "First test prayer comment",
+                  "createdAt": "2014-08-21T15:30:09+0000"
+                },
+                {
+                  "id": 2,
+                  "account": {
+                    "id": 1,
+                    "firstName": "Nathan",
+                    "lastName": "O'Hanlon",
+                    "facebook_id": 718469082
+                  },
+                  "content": "Second test prayer comment",
+                  "createdAt": "2014-08-21T15:30:09+0000"
+                }
+              ],
+              "createdAt": "2014-08-21T15:30:09+0000"
+            },
+            {
+              "id": 1,
+              "account": {
+                "id": 1,
+                "firstName": "Nathan",
+                "lastName": "O'Hanlon",
+                "facebook_id": 718469082
+              },
+              "content": "Some test prayer update",
+              "organisationBase": {
+                "id": 1,
+                "name": "St George's",
+                "countryCode": "GB",
+                "colour": "38373E",
+                "createdAt": "2014-08-21T15:30:09+0000",
+                "updatedAt": "2014-08-21T15:30:09+0000",
+                "isActive": true
+              },
+              "comments": [],
+              "createdAt": "2014-08-21T15:30:09+0000"
+            }
+          ]
+        }
+
+## PrayerUpdate Collection with Parameters [/app_test.php/api/prayer/updates?object_id=1&object_type=account&limit=1]
+### List all PrayerUpdates for a given account [GET]
+There will be the ability to have object_type of 'account' (default), 'organisation', or 'church'. For now just 'account' is supported.
+
+The limit defaults to 10 if not specified. The most recent prayer update will be returned if specified as 1.
+
++ Request (application/json)
+
+    + Header
+
+            Cookie: PHPSESSID=suf8n31ca43dc4ne5h38ok0da5
+            Accept: application/json
+
++ Response 200 (application/json)
+
+        {"total": 4, "limit": 1, "data": [
+            {
+                "id": 2,
+                "account": {
+                    "id": 1,
+                    "firstName": "Nathan",
+                    "lastName": "O'Hanlon",
+                    "facebook_id": 718469082
+                },
+                "content": "Second for user 1 prayer update",
+                "comments": [
+                    {
+                        "id": 1,
+                        "account": {
+                            "id": 1,
+                            "firstName": "Nathan",
+                            "lastName": "O'Hanlon",
+                            "facebook_id": 718469082
+                        },
+                        "content": "First test prayer comment",
+                        "createdAt": "2014-08-05T13:07:22+0000"
+                    },
+                    {
+                        "id": 2,
+                        "account": {
+                            "id": 1,
+                            "firstName": "Nathan",
+                            "lastName": "O'Hanlon",
+                            "facebook_id": 718469082
+                        },
+                        "content": "Second test prayer comment",
+                        "createdAt": "2014-08-05T13:07:22+0000"
+                    }
+                ],
+                "createdAt": "2014-08-05T13:07:22+0000"
+            }
+        ]}
+
+### Create a PrayerUpdate [POST]
++ Request (application/json)
+
+    + Header
+
+            Cookie: PHPSESSID=suf8n31ca43dc4ne5h38ok0da5
+
+    + Body
+
+            { "content": "A new prayer update" }
+
++ Response 200 (application/json)
+
+        {"id": 18, "account": {
+            "id": 217,
+            "firstName": "Nathan",
+            "lastName": "O'Hanlon",
+            "facebook_id": 718469082
+        }, "content": "A new prayer update", "comments": [], "createdAt": "2014-07-09T10:48:58+0000"}
+
+## Single PrayerUpdate [/app_test.php/api/prayer/updates/{id}]
+A single PrayerUpdate object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the PrayerUpdate to perform action with. Has example value.
+
+### Retrieve a PrayerUpdate [GET]
++ Request (application/json)
+
+    + Header
+
+            Cookie: PHPSESSID=suf8n31ca43dc4ne5h38ok0da5
+
++ Response 200 (application/json)
+
+        {"id": 1, "account": {
+            "id": 1,
+            "firstName": "Nathan",
+            "lastName": "O'Hanlon",
+            "facebook_id": 718469082
+        }, "content": "Some test prayer update", "organisationBase": {
+            "id": 1,
+            "name": "St George's",
+            "countryCode": "GB",
+            "colour": "38373E",
+            "createdAt": "2014-08-21T15:30:09+0000",
+            "updatedAt": "2014-08-21T15:30:09+0000",
+            "isActive": true
+        }, "comments": [], "createdAt": "2014-08-21T15:30:09+0000"}
+
+### Update a PrayerUpdate [PATCH]
++ Request (application/json)
+
+    + Header
+    
+            Cookie: PHPSESSID=suf8n31ca43dc4ne5h38ok0da5
+
+    + Body
+    
+            { "op": "replace", "path": "content", "value": "An updated prayer update" }
+
++ Response 204 (text/plain; charset=UTF-8)
+
+### Remove a PrayerUpdate [DELETE]
++ Response 204 (text/plain; charset=UTF-8)
